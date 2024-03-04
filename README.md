@@ -1,8 +1,4 @@
 # spotify-shuffler
-There are still some issues with duplicated entries and the script not performing a perfect delete and add of entries. Still working through this. Proceed at your own caution. 
-
-It's recommended to only operate on a copy of existing playlists until these issues can be flushed out.
-
 Get all entries from spotify playlist, delete them, shuffle them, then add them back in, since 
 Spotify can't figure out a simple randomizer function. 
 
@@ -32,5 +28,7 @@ locally as token.txt so that further runs of the script do not require reauth.
 The idea here is to shuffle the playlist, and then play it through, without using spotify's 
 shuffle algorithm, since once again, their developers dont know how basic randomization 
 works, and I hear the same 50 songs over and over again in a 600 song playlist. 
+
+*Note* The script will remove duplicate songs. If you want to keep them, comment out `songs = list(set(songs))` from `get_playlist_songs()`. 
 
 Enjoy. 

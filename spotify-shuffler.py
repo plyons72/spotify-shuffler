@@ -1,4 +1,3 @@
-import os
 import random
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
@@ -28,25 +27,30 @@ sp = spotipy.Spotify(
 def get_playlist_songs(playlist_id):
     # Get total number of tracks so we can loop over all of them. API only allows 100 at a time
     total_tracks = sp.playlist_items(playlist_id, fields='total')['total']
+    print("Total tracks in playlist: {}".format(total_tracks))
     songs = []
     index = 0
-    while index < total_tracks-1:
+    while index < total_tracks - 1:
+        # Call returns dict of items:track:id. Just get a list of IDs to operate on
         results = (sp.playlist_items(playlist_id, fields='items.track.id', offset=index))
         for item in results['items']:
             songs.append(item['track']['id'])
-        index += 100
-    return songs,total_tracks
+        index = index + 100
+    # Make song list a set to remove duplicates
+    print("Removing duplicate songs...")
+    songs = list(set(songs))
+    return songs, len(songs)
 
 # Function to delete all songs from the playlist
 def delete_playlist_songs(playlist_id, songs, total_tracks):
     first = 0
-    last = 99
+    last = 100
     # If we have more than 100 songs, loop through until we've deleted all songs in chunks of 100
-    if len(songs) > 100:
-        while first < total_tracks - 1:
+    if total_tracks > 100:
+        while first < total_tracks:
             sp.playlist_remove_all_occurrences_of_items(playlist_id, songs[first:last])
             first = first + 100
-            last = last + 100 if last + 100 < total_tracks - 1 else total_tracks - 1
+            last = last + 100 if last + 100 < total_tracks else total_tracks
     else:
         sp.playlist_remove_all_occurrences_of_items(playlist_id, songs)
 
@@ -54,15 +58,15 @@ def delete_playlist_songs(playlist_id, songs, total_tracks):
 def add_songs_shuffled(playlist_id, songs, total_tracks):
     # Helpers to keep track of our slices
     first = 0
-    last = 99
+    last = 100
     # Randomize the list
     random.shuffle(songs)
     # If we have more than 100 songs, loop through until we've added all songs in chunks of 100
-    if len(songs) > 100:
-        while first < total_tracks - 1:
+    if total_tracks > 100:
+        while first < total_tracks:
             sp.playlist_add_items(playlist_id, songs[first:last])
             first = first + 100
-            last = last + 100 if last + 100 < total_tracks - 1 else total_tracks - 1
+            last = last + 100 if last + 100 < total_tracks else total_tracks
     else:
         sp.playlist_add_items(playlist_id, songs)
 
