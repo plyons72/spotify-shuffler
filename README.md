@@ -1,4 +1,8 @@
 # spotify-shuffler
+There are still some issues with duplicated entries and the script not performing a perfect delete and add of entries. Still working through this. Proceed at your own caution. 
+
+It's recommended to only operate on a copy of existing playlists until these issues can be flushed out.
+
 Get all entries from spotify playlist, delete them, shuffle them, then add them back in, since 
 Spotify can't figure out a simple randomizer function. 
 
