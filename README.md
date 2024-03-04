@@ -21,3 +21,12 @@ Songs shuffled and added back to the playlist successfully.
 
 Note the `Enter the URL you were redirected to:` line. It just needs to extract a code from the 
 redirect url so that it can proceed with client auth and perform the shuffling. 
+
+If everything works correctly, the playlist will be shuffled, and a cached token will be saved 
+locally as token.txt so that further runs of the script do not require reauth. 
+
+The idea here is to shuffle the playlist, and then play it through, without using spotify's 
+shuffle algorithm, since once again, their developers dont know how basic randomization 
+works, and I hear the same 50 songs over and over again in a 600 song playlist. 
+
+Enjoy. 
