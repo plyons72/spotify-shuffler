@@ -23,6 +23,7 @@ sp = spotipy.Spotify(
         scope="playlist-modify-private",
         show_dialog=True,
         open_browser=False,
+        cache_path="token.txt"
     )
 )
 
