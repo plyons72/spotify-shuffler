@@ -23,10 +23,8 @@ sp = spotipy.Spotify(
         scope="playlist-modify-private",
         show_dialog=True,
         open_browser=False,
-        cache_path="token.txt"
     )
 )
-
 
 # Function to get all songs from the playlist
 def get_playlist_songs(playlist_id):
@@ -34,12 +32,14 @@ def get_playlist_songs(playlist_id):
     num_tracks = sp.playlist_items(playlist_id, fields='total')['total']
     songs = []
     index = 0
-    while index < num_tracks - 1:
+    while index < num_tracks:
         # Call returns dict of items:track:id. Just get a list of IDs to operate on
-        results = (sp.playlist_items(playlist_id, fields='items.track.id', offset=index))
+        results = (sp.playlist_items(playlist_id, limit=100, fields='items.track.id', offset=index))
         for item in results['items']:
             songs.append(item['track']['id'])
         index = index + 100
+    # Delete duplicate songs
+    songs = list(set(songs))
     return songs, len(songs)
 
 # Function to delete all songs from the playlist
